@@ -20,4 +20,5 @@ export default defineConfig({
 			"@": resolve(__dirname, "./src"),
 		},
 	},
+	base: "/what-the-sheet/",
 });
