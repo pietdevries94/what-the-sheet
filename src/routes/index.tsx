@@ -1,6 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { MainSection } from "@/components/MainSection";
-import { Header } from "@/components/Header";
+import { CharacterSheet } from "@/components/CharacterSheet";
 
 export const Route = createFileRoute("/")({
 	component: App,
@@ -8,9 +7,8 @@ export const Route = createFileRoute("/")({
 
 function App() {
 	return (
-		<div className="text-center">
-			<Header />
-			<MainSection />
-		</div>
+		<>
+			<CharacterSheet id="1" />
+		</>
 	);
 }
