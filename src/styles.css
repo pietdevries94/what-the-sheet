@@ -1,8 +1,9 @@
+@import url("https://fonts.googleapis.com/css2?family=Caudex:ital,wght@0,400;0,700;1,400;1,700&display=swap");
 @import "tailwindcss";
-
 @plugin "tailwindcss-animate";
 
 @theme {
 	--color-background: oklch(0.9967 0.0054 95.1);
 	--color-foreground: oklch(0.145 0 0);
+	--font-serif: "Caudex", serif;
 }
