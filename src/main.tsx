@@ -1,13 +1,18 @@
 import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
+import { makePersistedAdapter } from "@livestore/adapter-web";
+import LiveStoreSharedWorker from "@livestore/adapter-web/shared-worker?sharedworker";
+import { LiveStoreProvider } from "@livestore/react";
+import { unstable_batchedUpdates as batchUpdates } from "react-dom";
+import LiveStoreWorker from "./livestore.worker?worker";
+import { schema } from "./livestore/schema.js";
 
 // Import the generated route tree
 import { routeTree } from "./routeTree.gen";
 
 import "./styles.css";
 import reportWebVitals from "./reportWebVitals.ts";
-import { PowerSyncProvider } from "./powersync/PowerSyncProvider.tsx";
 
 // Import PowerSync context and query client
 
@@ -29,15 +34,27 @@ declare module "@tanstack/react-router" {
 	}
 }
 
+const adapter = makePersistedAdapter({
+	storage: { type: "opfs" },
+	worker: LiveStoreWorker,
+	sharedWorker: LiveStoreSharedWorker,
+});
+
 // Render the app
 const rootElement = document.getElementById("app");
 if (rootElement && !rootElement.innerHTML) {
 	const root = ReactDOM.createRoot(rootElement);
 	root.render(
 		<StrictMode>
-			<PowerSyncProvider>
+			<LiveStoreProvider
+				schema={schema}
+				adapter={adapter}
+				renderLoading={(_) => <div>Loading LiveStore ({_.stage})...</div>}
+				batchUpdates={batchUpdates}
+				storeId="temporary-store-id-what-the-sheet"
+			>
 				<RouterProvider router={router} />
-			</PowerSyncProvider>
+			</LiveStoreProvider>
 		</StrictMode>,
 	);
 }

@@ -1,33 +1,44 @@
-import { useQuery } from "@powersync/tanstack-react-query";
+import { queryDb } from "@livestore/livestore";
+import { useStore } from "@livestore/react";
 import { MainStats } from "./MainStats";
 import { SavingThrows } from "./SavingThrows";
 import { Skills } from "./Skills";
 import { CharacterSheetContext } from "./CharacterSheetContext";
 import type React from "react";
-import { db } from "@/powersync/db";
+import { events, tables } from "@/livestore/schema";
+
+const characterSheetExists$ = (id: string) =>
+	queryDb(
+		tables.characterSheets
+			.where({
+				id,
+			})
+			.count(),
+	);
 
 type Props = {
 	id: string;
 };
 export const CharacterSheet: React.FC<Props> = ({ id }) => {
-	const { data, isLoading } = useQuery({
-		queryKey: ["characterSheet", id],
-		query: db.selectFrom("characterSheets").select(["id"]).where("id", "=", id),
-	});
-
-	if (isLoading) {
-		return <div>Loading character sheet...</div>;
+	if (!id) {
+		return (
+			<div className="flex flex-col items-center justify-center h-full">
+				<p className="text-lg text-gray-500">No character sheet selected</p>
+			</div>
+		);
 	}
 
+	const { store } = useStore();
+	const characterSheetExists = store.useQuery(characterSheetExists$(id));
+
 	// Ensure the character sheet exists
-	if (!data || data.length === 0) {
-		db.insertInto("characterSheets")
-			.values({ id })
-			.execute()
-			.catch((error) => {
-				console.error("Failed to create character sheet:", error);
-			});
-		return <div>Character sheet not found, creating a new one...</div>;
+	if (!characterSheetExists) {
+		store.commit(events["characterSheetCreated"]({ id }));
+		return (
+			<div className="flex flex-col items-center justify-center h-full">
+				<p className="text-lg text-gray-500">Creating character sheet...</p>
+			</div>
+		);
 	}
 
 	return (

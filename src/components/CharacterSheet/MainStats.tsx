@@ -1,8 +1,26 @@
-import { useQuery } from "@powersync/tanstack-react-query";
 import { useContext } from "react";
+import { useStore } from "@livestore/react";
+import { queryDb } from "@livestore/livestore";
 import { CharacterSheetContext } from "./CharacterSheetContext";
 import type React from "react";
-import { db } from "@/powersync/db";
+import { tables } from "@/livestore/schema";
+
+const characterSheet$ = (id: string) =>
+	queryDb(
+		tables.characterSheets
+			.select(
+				"constitution",
+				"dexterity",
+				"intelligence",
+				"charisma",
+				"wisdom",
+				"strength",
+			)
+			.where({
+				id,
+			})
+			.first(),
+	);
 
 const StatBlock: React.FC<{ label: string; value: number | null }> = ({
 	label,
@@ -28,37 +46,18 @@ const StatBlock: React.FC<{ label: string; value: number | null }> = ({
 export const MainStats: React.FC = () => {
 	const id = useContext(CharacterSheetContext);
 
-	const { data, isLoading } = useQuery({
-		queryKey: ["mainStats", id],
-		query: db
-			.selectFrom("characterSheets")
-			.select([
-				"constitution",
-				"dexterity",
-				"intelligence",
-				"charisma",
-				"wisdom",
-				"strength",
-			])
-			.where("id", "=", id),
-	});
+	const { store } = useStore();
 
-	if (isLoading) {
-		return <div>Loading...</div>;
-	}
-
-	if (!data || data.length === 0) {
-		return <div>No stats available.</div>;
-	}
+	const characterSheet = store.useQuery(characterSheet$(id));
 
 	return (
 		<div className="flex flex-col gap-2">
-			<StatBlock label="Con" value={data[0].constitution} />
-			<StatBlock label="Dex" value={data[0].dexterity} />
-			<StatBlock label="Int" value={data[0].intelligence} />
-			<StatBlock label="Cha" value={data[0].charisma} />
-			<StatBlock label="Wis" value={data[0].wisdom} />
-			<StatBlock label="Str" value={data[0].strength} />
+			<StatBlock label="Con" value={characterSheet.constitution} />
+			<StatBlock label="Dex" value={characterSheet.dexterity} />
+			<StatBlock label="Int" value={characterSheet.intelligence} />
+			<StatBlock label="Cha" value={characterSheet.charisma} />
+			<StatBlock label="Wis" value={characterSheet.wisdom} />
+			<StatBlock label="Str" value={characterSheet.strength} />
 		</div>
 	);
 };
