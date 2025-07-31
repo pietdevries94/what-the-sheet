@@ -33,7 +33,9 @@ export const CharacterSheet: React.FC<Props> = ({ id }) => {
 
 	// Ensure the character sheet exists
 	if (!characterSheetExists) {
-		store.commit(events["characterSheetCreated"]({ id }));
+		store.commit(
+			events["characterSheetCreated"]({ id, name: "New Character" }),
+		);
 		return (
 			<div className="flex h-full flex-col items-center justify-center">
 				<p className="text-lg text-gray-500">Creating character sheet...</p>

@@ -5,12 +5,15 @@ export const tables = {
 		name: "characterSheets",
 		columns: {
 			id: State.SQLite.text({ primaryKey: true }),
-			constitution: State.SQLite.integer({ nullable: false }),
-			dexterity: State.SQLite.integer({ nullable: false }),
-			intelligence: State.SQLite.integer({ nullable: false }),
-			charisma: State.SQLite.integer({ nullable: false }),
-			wisdom: State.SQLite.integer({ nullable: false }),
-			strength: State.SQLite.integer({ nullable: false }),
+			name: State.SQLite.text(),
+		},
+	}),
+	statAdjustments: State.SQLite.table({
+		name: "statAdjustments",
+		columns: {
+			characterSheetId: State.SQLite.text(),
+			stat: State.SQLite.text(),
+			value: State.SQLite.integer(),
 		},
 	}),
 };
@@ -18,20 +21,29 @@ export const tables = {
 export const events = {
 	characterSheetCreated: Events.synced({
 		name: "v1.CharacterSheetCreated",
-		schema: Schema.Struct({ id: Schema.String }),
+		schema: Schema.Struct({ id: Schema.String, name: Schema.String }),
+	}),
+	statAdjustmentCreated: Events.synced({
+		name: "v1.StatAdjustmentCreated",
+		schema: Schema.Struct({
+			characterSheetId: Schema.String,
+			stat: Schema.String,
+			value: Schema.Number,
+		}),
 	}),
 };
 
 const materializers = State.SQLite.materializers(events, {
-	"v1.CharacterSheetCreated": ({ id }) =>
+	"v1.CharacterSheetCreated": ({ id, name }) =>
 		tables.characterSheets.insert({
 			id,
-			constitution: 10,
-			dexterity: 10,
-			intelligence: 10,
-			charisma: 10,
-			wisdom: 10,
-			strength: 10,
+			name,
+		}),
+	"v1.StatAdjustmentCreated": ({ characterSheetId, stat, value }) =>
+		tables.statAdjustments.insert({
+			characterSheetId,
+			stat,
+			value,
 		}),
 });
 

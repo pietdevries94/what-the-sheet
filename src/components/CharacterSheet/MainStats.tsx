@@ -1,32 +1,18 @@
 import { useContext } from "react";
 import { useStore } from "@livestore/react";
-import { queryDb } from "@livestore/livestore";
 import { CharacterSheetContext } from "./CharacterSheetContext";
 import type React from "react";
-import { tables } from "@/livestore/schema";
+import { statAndModifier$ } from "@/livestore/queries";
 
-const characterSheet$ = (id: string) =>
-	queryDb(
-		tables.characterSheets
-			.select(
-				"constitution",
-				"dexterity",
-				"intelligence",
-				"charisma",
-				"wisdom",
-				"strength",
-			)
-			.where({
-				id,
-			})
-			.first(),
-	);
-
-const StatBlock: React.FC<{ label: string; value: number | null }> = ({
+const StatBlock: React.FC<{ stat: string; label: string }> = ({
+	stat,
 	label,
-	value,
 }) => {
-	const modifier = value ? Math.floor((value - 10) / 2) : undefined;
+	const id = useContext(CharacterSheetContext);
+
+	const { store } = useStore();
+	const { value, modifier } = store.useQuery(statAndModifier$(id, stat));
+
 	return (
 		<div className="relative flex flex-col items-center justify-center py-2">
 			<div
@@ -45,7 +31,7 @@ const StatBlock: React.FC<{ label: string; value: number | null }> = ({
 				`}
 			>
 				{modifier && modifier >= 0 ? "+" : ""}
-				{modifier ?? ""}
+				{modifier}
 			</span>
 			<div
 				className={`
@@ -60,21 +46,13 @@ const StatBlock: React.FC<{ label: string; value: number | null }> = ({
 	);
 };
 
-export const MainStats: React.FC = () => {
-	const id = useContext(CharacterSheetContext);
-
-	const { store } = useStore();
-
-	const characterSheet = store.useQuery(characterSheet$(id));
-
-	return (
-		<div className="flex flex-col gap-2">
-			<StatBlock label="Con" value={characterSheet.constitution} />
-			<StatBlock label="Dex" value={characterSheet.dexterity} />
-			<StatBlock label="Int" value={characterSheet.intelligence} />
-			<StatBlock label="Cha" value={characterSheet.charisma} />
-			<StatBlock label="Wis" value={characterSheet.wisdom} />
-			<StatBlock label="Str" value={characterSheet.strength} />
-		</div>
-	);
-};
+export const MainStats: React.FC = () => (
+	<div className="flex flex-col gap-2">
+		<StatBlock label="Con" stat="constitution" />
+		<StatBlock label="Dex" stat="dexterity" />
+		<StatBlock label="Int" stat="intelligence" />
+		<StatBlock label="Cha" stat="charisma" />
+		<StatBlock label="Wis" stat="wisdom" />
+		<StatBlock label="Str" stat="strength" />
+	</div>
+);
