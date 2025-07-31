@@ -60,6 +60,7 @@
 		"vite": "catalog:",
 		"vite-plugin-pwa": "catalog:",
 		"vitest": "catalog:",
-		"web-vitals": "catalog:"
+		"web-vitals": "catalog:",
+		"workbox-window": "catalog:"
 	}
 }

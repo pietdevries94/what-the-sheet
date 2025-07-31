@@ -144,6 +144,9 @@ catalogs:
     web-vitals:
       specifier: ^5.0.3
       version: 5.0.3
+    workbox-window:
+      specifier: ^7.3.0
+      version: 7.3.0
 
 importers:
 
@@ -288,6 +291,9 @@ importers:
       web-vitals:
         specifier: 'catalog:'
         version: 5.0.3
+      workbox-window:
+        specifier: 'catalog:'
+        version: 7.3.0
 
 packages:
 
