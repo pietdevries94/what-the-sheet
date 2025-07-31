@@ -45,7 +45,7 @@ export const CharacterSheet: React.FC<Props> = ({ id }) => {
 
 	return (
 		<CharacterSheetContext.Provider value={id}>
-			<div className="flex flex-row">
+			<div className="flex flex-row gap-4">
 				<MainStats />
 				<SavingThrows />
 				<Skills />
