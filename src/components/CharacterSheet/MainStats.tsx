@@ -28,15 +28,32 @@ const StatBlock: React.FC<{ label: string; value: number | null }> = ({
 }) => {
 	const modifier = value ? Math.floor((value - 10) / 2) : undefined;
 	return (
-		<div className="flex flex-col items-center justify-center relative py-2">
-			<div className="flex items-center justify-center text-sm tracking-wide text-stone-500 absolute top-0 border-stone-400 leading-none bg-background h-5 text-center w-9 rounded-md border">
+		<div className="relative flex flex-col items-center justify-center py-2">
+			<div
+				className={`
+					absolute top-0 flex h-5 w-9 items-center justify-center rounded-md border
+					border-stone-400 bg-background text-center text-sm leading-none
+					tracking-wide text-stone-500
+				`}
+			>
 				{label}
 			</div>
-			<span className="flex items-center justify-center w-12 h-14 rounded-md border border-stone-400 text-lg text-stone-600">
+			<span
+				className={`
+					flex h-14 w-12 items-center justify-center rounded-md border
+					border-stone-400 text-lg text-stone-600
+				`}
+			>
 				{modifier && modifier >= 0 ? "+" : ""}
 				{modifier ?? ""}
 			</span>
-			<div className="flex items-center justify-center text-sm text-stone-500 absolute bottom-0 bg-background border-stone-400 leading-none h-5 w-6 text-center rounded-md border">
+			<div
+				className={`
+					absolute bottom-0 flex h-5 w-6 items-center justify-center rounded-md
+					border border-stone-400 bg-background text-center text-sm leading-none
+					text-stone-500
+				`}
+			>
 				{value}
 			</div>
 		</div>

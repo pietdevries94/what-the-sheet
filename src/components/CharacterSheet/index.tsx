@@ -22,7 +22,7 @@ type Props = {
 export const CharacterSheet: React.FC<Props> = ({ id }) => {
 	if (!id) {
 		return (
-			<div className="flex flex-col items-center justify-center h-full">
+			<div className="flex h-full flex-col items-center justify-center">
 				<p className="text-lg text-gray-500">No character sheet selected</p>
 			</div>
 		);
@@ -35,7 +35,7 @@ export const CharacterSheet: React.FC<Props> = ({ id }) => {
 	if (!characterSheetExists) {
 		store.commit(events["characterSheetCreated"]({ id }));
 		return (
-			<div className="flex flex-col items-center justify-center h-full">
+			<div className="flex h-full flex-col items-center justify-center">
 				<p className="text-lg text-gray-500">Creating character sheet...</p>
 			</div>
 		);

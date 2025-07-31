@@ -10,7 +10,7 @@
 		"test": "vitest run",
 		"lint": "eslint",
 		"format": "prettier",
-		"check": "prettier --write . && eslint --fix"
+		"check": "eslint --fix && prettier --write ."
 	},
 	"dependencies": {
 		"@livestore/adapter-web": "catalog:",
@@ -51,6 +51,7 @@
 		"@types/react-dom": "catalog:",
 		"@vitejs/plugin-react": "catalog:",
 		"eslint": "catalog:",
+		"eslint-plugin-better-tailwindcss": "catalog:",
 		"eslint-plugin-react": "catalog:",
 		"globals": "catalog:",
 		"jsdom": "catalog:",
