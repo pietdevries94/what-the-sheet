@@ -5,14 +5,18 @@ import { makePersistedAdapter } from "@livestore/adapter-web";
 import LiveStoreSharedWorker from "@livestore/adapter-web/shared-worker?sharedworker";
 import { LiveStoreProvider } from "@livestore/react";
 import { unstable_batchedUpdates as batchUpdates } from "react-dom";
+import { registerSW } from "virtual:pwa-register";
 import LiveStoreWorker from "./livestore.worker?worker";
-import { schema } from "./livestore/schema.js";
+import { schema } from "./livestore/schema";
 
 // Import the generated route tree
 import { routeTree } from "./routeTree.gen";
 
 import "./styles.css";
 import reportWebVitals from "./reportWebVitals.ts";
+
+// Register the service worker for PWA functionality
+registerSW({ immediate: true });
 
 // Import PowerSync context and query client
 
