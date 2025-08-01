@@ -21,7 +21,10 @@ export const tables = {
 export const events = {
 	characterSheetCreated: Events.synced({
 		name: "v1.CharacterSheetCreated",
-		schema: Schema.Struct({ id: Schema.String, name: Schema.String.pipe(Schema.optional) }),
+		schema: Schema.Struct({
+			id: Schema.String,
+			name: Schema.String.pipe(Schema.optional),
+		}),
 	}),
 	statAdjustmentCreated: Events.synced({
 		name: "v1.StatAdjustmentCreated",
