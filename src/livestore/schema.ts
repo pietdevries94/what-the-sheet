@@ -21,7 +21,7 @@ export const tables = {
 export const events = {
 	characterSheetCreated: Events.synced({
 		name: "v1.CharacterSheetCreated",
-		schema: Schema.Struct({ id: Schema.String, name: Schema.String }),
+		schema: Schema.Struct({ id: Schema.String, name: Schema.String.pipe(Schema.optional) }),
 	}),
 	statAdjustmentCreated: Events.synced({
 		name: "v1.StatAdjustmentCreated",
@@ -37,7 +37,7 @@ const materializers = State.SQLite.materializers(events, {
 	"v1.CharacterSheetCreated": ({ id, name }) =>
 		tables.characterSheets.insert({
 			id,
-			name,
+			name: name || "unknown name",
 		}),
 	"v1.StatAdjustmentCreated": ({ characterSheetId, stat, value }) =>
 		tables.statAdjustments.insert({
