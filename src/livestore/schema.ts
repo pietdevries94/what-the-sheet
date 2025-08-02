@@ -16,6 +16,28 @@ export const tables = {
 			value: State.SQLite.integer(),
 		},
 	}),
+	savingThrowProficiencies: State.SQLite.table({
+		name: "savingThrowProficiencies",
+		columns: {
+			characterSheetId: State.SQLite.text(),
+			savingThrow: State.SQLite.text(),
+		},
+	}),
+	skillProficiencies: State.SQLite.table({
+		name: "skillProficiencies",
+		columns: {
+			characterSheetId: State.SQLite.text(),
+			skill: State.SQLite.text(),
+		},
+	}),
+	generalProficiencies: State.SQLite.table({
+		name: "generalProficiencies",
+		columns: {
+			characterSheetId: State.SQLite.text(),
+			proficiencyType: State.SQLite.text(),
+			proficiencyName: State.SQLite.text(),
+		},
+	}),
 };
 
 export const events = {
@@ -34,6 +56,28 @@ export const events = {
 			value: Schema.Number,
 		}),
 	}),
+	savingThrowProficiencyCreated: Events.synced({
+		name: "v1.SavingThrowProficiencyCreated",
+		schema: Schema.Struct({
+			characterSheetId: Schema.String,
+			savingThrow: Schema.String,
+		}),
+	}),
+	skillProficiencyCreated: Events.synced({
+		name: "v1.SkillProficiencyCreated",
+		schema: Schema.Struct({
+			characterSheetId: Schema.String,
+			skill: Schema.String,
+		}),
+	}),
+	generalProficiencyCreated: Events.synced({
+		name: "v1.GeneralProficiencyCreated",
+		schema: Schema.Struct({
+			characterSheetId: Schema.String,
+			proficiencyType: Schema.String,
+			proficiencyName: Schema.String,
+		}),
+	}),
 };
 
 const materializers = State.SQLite.materializers(events, {
@@ -47,6 +91,22 @@ const materializers = State.SQLite.materializers(events, {
 			characterSheetId,
 			stat,
 			value,
+		}),
+	"v1.SavingThrowProficiencyCreated": ({ characterSheetId, savingThrow }) =>
+		tables.savingThrowProficiencies.insert({
+			characterSheetId,
+			savingThrow,
+		}),
+	"v1.SkillProficiencyCreated": ({ characterSheetId, skill }) =>
+		tables.skillProficiencies.insert({
+			characterSheetId,
+			skill,
+		}),
+	"v1.GeneralProficiencyCreated": ({ characterSheetId, proficiencyType, proficiencyName }) =>
+		tables.generalProficiencies.insert({
+			characterSheetId,
+			proficiencyType,
+			proficiencyName,
 		}),
 });
 
