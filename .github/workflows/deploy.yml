@@ -1,10 +1,13 @@
-# Simple workflow for deploying static content to GitHub Pages
-name: Deploy static content to Pages
+# Workflow for checking code and deploying static content to GitHub Pages
+name: check-and-deploy
 
 on:
   # Runs on pushes targeting the default branch
   push:
     branches: ["main"]
+
+  # Runs on pull requests
+  pull_request:
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -21,10 +24,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  check:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -48,6 +48,26 @@ jobs:
         run: pnpm format --check .
       - name: Build
         run: pnpm run build
+      - name: Upload build artifacts
+        if: github.ref == 'refs/heads/main'
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: ./dist
+
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    needs: check
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: ./dist
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
