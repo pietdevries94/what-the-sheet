@@ -6,7 +6,7 @@
    - Executes the test suite using vitest
    - Ensures all functionality works as expected
 
-2. **Run checks**: `pnpm run check` 
+2. **Run checks**: `pnpm run check`
    - Runs ESLint with auto-fix to catch and fix code quality issues
    - Runs Prettier to format code consistently
    - Ensures code follows project standards

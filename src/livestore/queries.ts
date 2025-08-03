@@ -13,13 +13,13 @@ export const statAndModifier$ = (characterSheetId: string, stat: string) =>
 export const savingThrowProficiencies$ = (characterSheetId: string) =>
 	queryDb(
 		tables.savingThrowProficiencies
-			.select('savingThrow', 'expert')
-			.where({ characterSheetId })
+			.select("savingThrow", "expert")
+			.where({ characterSheetId }),
 	);
 
 export const skillProficiencies$ = (characterSheetId: string) =>
 	queryDb(
 		tables.skillProficiencies
-			.select('skill', 'expert')
-			.where({ characterSheetId })
+			.select("skill", "expert")
+			.where({ characterSheetId }),
 	);
