@@ -80,7 +80,11 @@ const materializers = State.SQLite.materializers(events, {
 			stat,
 			value,
 		}),
-	"v1.SavingThrowProficiencyCreated": ({ characterSheetId, savingThrow, expert }) =>
+	"v1.SavingThrowProficiencyCreated": ({
+		characterSheetId,
+		savingThrow,
+		expert,
+	}) =>
 		tables.savingThrowProficiencies.insert({
 			characterSheetId,
 			savingThrow,
