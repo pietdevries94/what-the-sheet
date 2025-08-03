@@ -1,4 +1,5 @@
 import { Schema, queryDb, sql } from "@livestore/livestore";
+import { tables } from "./schema.js";
 
 export const statAndModifier$ = (characterSheetId: string, stat: string) =>
 	queryDb({
@@ -8,3 +9,17 @@ export const statAndModifier$ = (characterSheetId: string, stat: string) =>
 			modifier: Schema.Number,
 		}).pipe(Schema.Array, Schema.headOrElse()),
 	});
+
+export const savingThrowProficiencies$ = (characterSheetId: string) =>
+	queryDb(
+		tables.savingThrowProficiencies
+			.select('savingThrow', 'expert')
+			.where({ characterSheetId })
+	);
+
+export const skillProficiencies$ = (characterSheetId: string) =>
+	queryDb(
+		tables.skillProficiencies
+			.select('skill', 'expert')
+			.where({ characterSheetId })
+	);
