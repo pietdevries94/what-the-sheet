@@ -1,7 +1,8 @@
 import type React from "react";
+import type { DndStat } from "@/dndTypes";
 import { useStatAndModifier } from "@/hooks/characterSheet/useStatAndModifier";
 
-const StatBlock: React.FC<{ stat: string; label: string }> = ({
+const StatBlock: React.FC<{ stat: DndStat; label: string }> = ({
 	stat,
 	label,
 }) => {

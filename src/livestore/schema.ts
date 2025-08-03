@@ -1,4 +1,7 @@
 import { Events, Schema, State, makeSchema } from "@livestore/livestore";
+import { dndStats } from "../dndTypes";
+
+const StatSchema = Schema.Literal(...dndStats);
 
 export const tables = {
 	characterSheets: State.SQLite.table({
@@ -46,7 +49,7 @@ export const events = {
 		name: "v1.StatAdjustmentCreated",
 		schema: Schema.Struct({
 			characterSheetId: Schema.String,
-			stat: Schema.String,
+			stat: StatSchema,
 			value: Schema.Number,
 		}),
 	}),
