@@ -1,18 +1,11 @@
-import { useContext } from "react";
-import { useStore } from "@livestore/react";
-import { CharacterSheetContext } from "./CharacterSheetContext";
 import type React from "react";
-import { statAndModifier$ } from "@/livestore/queries";
+import { useStatAndModifier } from "@/hooks/characterSheet/useStatAndModifier";
 
 const StatBlock: React.FC<{ stat: string; label: string }> = ({
 	stat,
 	label,
 }) => {
-	const id = useContext(CharacterSheetContext);
-
-	const { store } = useStore();
-	const { value, modifier } = store.useQuery(statAndModifier$(id, stat));
-
+	const { value, modifier } = useStatAndModifier(stat);
 	return (
 		<div className="relative flex flex-col items-center justify-center py-2">
 			<div
