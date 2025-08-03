@@ -21,6 +21,7 @@ export const tables = {
 		columns: {
 			characterSheetId: State.SQLite.text(),
 			savingThrow: State.SQLite.text(),
+			expert: State.SQLite.integer({ default: 0 }),
 		},
 	}),
 	skillProficiencies: State.SQLite.table({
@@ -28,14 +29,7 @@ export const tables = {
 		columns: {
 			characterSheetId: State.SQLite.text(),
 			skill: State.SQLite.text(),
-		},
-	}),
-	generalProficiencies: State.SQLite.table({
-		name: "generalProficiencies",
-		columns: {
-			characterSheetId: State.SQLite.text(),
-			proficiencyType: State.SQLite.text(),
-			proficiencyName: State.SQLite.text(),
+			expert: State.SQLite.integer({ default: 0 }),
 		},
 	}),
 };
@@ -61,6 +55,7 @@ export const events = {
 		schema: Schema.Struct({
 			characterSheetId: Schema.String,
 			savingThrow: Schema.String,
+			expert: Schema.Boolean.pipe(Schema.optional),
 		}),
 	}),
 	skillProficiencyCreated: Events.synced({
@@ -68,14 +63,7 @@ export const events = {
 		schema: Schema.Struct({
 			characterSheetId: Schema.String,
 			skill: Schema.String,
-		}),
-	}),
-	generalProficiencyCreated: Events.synced({
-		name: "v1.GeneralProficiencyCreated",
-		schema: Schema.Struct({
-			characterSheetId: Schema.String,
-			proficiencyType: Schema.String,
-			proficiencyName: Schema.String,
+			expert: Schema.Boolean.pipe(Schema.optional),
 		}),
 	}),
 };
@@ -92,21 +80,17 @@ const materializers = State.SQLite.materializers(events, {
 			stat,
 			value,
 		}),
-	"v1.SavingThrowProficiencyCreated": ({ characterSheetId, savingThrow }) =>
+	"v1.SavingThrowProficiencyCreated": ({ characterSheetId, savingThrow, expert }) =>
 		tables.savingThrowProficiencies.insert({
 			characterSheetId,
 			savingThrow,
+			expert: expert ? 1 : 0,
 		}),
-	"v1.SkillProficiencyCreated": ({ characterSheetId, skill }) =>
+	"v1.SkillProficiencyCreated": ({ characterSheetId, skill, expert }) =>
 		tables.skillProficiencies.insert({
 			characterSheetId,
 			skill,
-		}),
-	"v1.GeneralProficiencyCreated": ({ characterSheetId, proficiencyType, proficiencyName }) =>
-		tables.generalProficiencies.insert({
-			characterSheetId,
-			proficiencyType,
-			proficiencyName,
+			expert: expert ? 1 : 0,
 		}),
 });
 
