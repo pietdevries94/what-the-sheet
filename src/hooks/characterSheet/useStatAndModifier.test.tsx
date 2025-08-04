@@ -27,34 +27,37 @@ describe("useStatAndModifier", () => {
 		const { store, wrapper } = await createStoreWrapper(onTestFinished);
 
 		// Insert test data for multiple different stats using schema
-		store.sqliteDbWrapper.execute(
+		await store.sqliteDbWrapper.execute(
 			tables.statAdjustments.insert({
 				characterSheetId,
 				stat: "constitution",
 				value: 8,
 			}),
 		);
-		store.sqliteDbWrapper.execute(
+		await store.sqliteDbWrapper.execute(
 			tables.statAdjustments.insert({
 				characterSheetId,
 				stat: "constitution",
 				value: 7,
 			}),
 		);
-		store.sqliteDbWrapper.execute(
+		await store.sqliteDbWrapper.execute(
 			tables.statAdjustments.insert({
 				characterSheetId,
 				stat: "strength",
 				value: 16,
 			}),
 		);
-		store.sqliteDbWrapper.execute(
+		await store.sqliteDbWrapper.execute(
 			tables.statAdjustments.insert({
 				characterSheetId,
 				stat: "dexterity",
 				value: 14,
 			}),
 		);
+
+		// Give LiveStore time to process the inserts
+		await new Promise(resolve => setTimeout(resolve, 100));
 
 		// Test the hook for constitution - should sum only constitution values (8 + 7 = 15)
 		const { result: constitutionResult } = renderHook(
