@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { renderHook } from "@testing-library/react";
 import { useStatAndModifier } from "./useStatAndModifier";
-import { createStoreWrapper } from "@/test-utils";
+import { createStoreWrapper } from "@/test-utils/store";
 
 describe("useStatAndModifier", () => {
 	it("retrieves the correct stat and modifier", async ({ onTestFinished }) => {
