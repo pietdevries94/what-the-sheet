@@ -33,8 +33,8 @@ export const createStoreWrapper = async (
 
 	// Add useQuery method for React hooks compatibility
 	// This creates a reactive-like interface that returns the current query result
-	(store as any).useQuery = (query: any) => {
-		return store.query(query);
+	(store as any).useQuery = (queryObject: any) => {
+		return store.query(queryObject);
 	};
 
 	const wrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (

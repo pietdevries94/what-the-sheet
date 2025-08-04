@@ -1,8 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { renderHook, waitFor } from "@testing-library/react";
+import { renderHook } from "@testing-library/react";
+import { useStore } from "@livestore/react";
 import { useStatAndModifier } from "./useStatAndModifier";
 import { createStoreWrapper } from "@/test-utils";
 import { tables } from "@/livestore/schema";
+import { statAndModifier$ } from "@/livestore/queries";
 
 describe("useStatAndModifier", () => {
 	it("retrieves the correct stat and modifier", async ({ onTestFinished }) => {
@@ -74,19 +76,14 @@ describe("useStatAndModifier", () => {
 			{ wrapper },
 		);
 
-		await waitFor(() => {
-			expect(constitutionResult.current.value).toBe(15); // 8 + 7 = 15
-			expect(constitutionResult.current.modifier).toBe(2); // floor((15-10)/2) = 2
-		});
+		// Test assertions directly since useQuery should be synchronous
+		expect(constitutionResult.current.value).toBe(15); // 8 + 7 = 15
+		expect(constitutionResult.current.modifier).toBe(2); // floor((15-10)/2) = 2
 
-		await waitFor(() => {
-			expect(strengthResult.current.value).toBe(16);
-			expect(strengthResult.current.modifier).toBe(3); // floor((16-10)/2) = 3
-		});
+		expect(strengthResult.current.value).toBe(16);
+		expect(strengthResult.current.modifier).toBe(3); // floor((16-10)/2) = 3
 
-		await waitFor(() => {
-			expect(dexterityResult.current.value).toBe(14);
-			expect(dexterityResult.current.modifier).toBe(2); // floor((14-10)/2) = 2
-		});
+		expect(dexterityResult.current.value).toBe(14);
+		expect(dexterityResult.current.modifier).toBe(2); // floor((14-10)/2) = 2
 	});
 });
