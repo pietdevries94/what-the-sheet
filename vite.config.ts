@@ -16,6 +16,7 @@ export default defineConfig({
 			registerType: "autoUpdate",
 			workbox: {
 				maximumFileSizeToCacheInBytes: 4000000,
+				globPatterns: ["**/*.{js,css,html,woff2,woff,png,wasm}"],
 			},
 		}),
 		livestoreDevtoolsPlugin({ schemaPath: "./src/livestore/schema.ts" }),
