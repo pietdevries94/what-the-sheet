@@ -15,8 +15,8 @@ export const createStoreWrapper = async (
 	onTestFinished: (fn: () => void | Promise<void>) => void,
 ) => {
 	// Create a unique temporary directory for this test
-	const testId = `test-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
-	const tempDir = join("tmp", testId);
+	const storeId = `test-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
+	const tempDir = join("tmp", storeId);
 
 	// Create the temporary directory (recursive option handles parent directories)
 	await fs.mkdir(tempDir, { recursive: true });
@@ -28,7 +28,7 @@ export const createStoreWrapper = async (
 	const store = await createStorePromise({
 		adapter,
 		schema,
-		storeId: "test",
+		storeId,
 	});
 
 	const wrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
