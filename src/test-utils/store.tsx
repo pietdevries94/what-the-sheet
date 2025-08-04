@@ -31,6 +31,12 @@ export const createStoreWrapper = async (
 		storeId: "test",
 	});
 
+	// Add useQuery method for React hooks compatibility
+	// This creates a reactive-like interface that returns the current query result
+	(store as any).useQuery = (query: any) => {
+		return store.query(query);
+	};
+
 	const wrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
 		// @ts-expect-error I put a node store in a React context, which is not the intended use case, but it works for testing
 		<LiveStoreContext.Provider value={{ stage: "running", store }}>
