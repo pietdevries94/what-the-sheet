@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { CharacterSheetContext } from "./CharacterSheetContext";
+import { MainStatDialog } from "./MainStatDialog";
 import type React from "react";
 import { useStatsAndModifiers } from "@/hooks/characterSheet/useStatsAndModifiers";
 
@@ -27,15 +28,19 @@ const StatBlock: React.FC<{
 			{modifier && modifier >= 0 ? "+" : ""}
 			{modifier}
 		</span>
-		<div
-			className={`
-				absolute bottom-0 flex h-5 w-6 items-center justify-center rounded-md border
-				border-stone-400 bg-background text-center text-sm leading-none
-				text-stone-500
-			`}
-		>
-			{value}
-		</div>
+		<MainStatDialog>
+			<button
+				type="button"
+				className={`
+					absolute bottom-0 flex h-5 w-6 items-center justify-center rounded-md
+					border border-stone-400 bg-background text-center text-sm leading-none
+					text-stone-500
+					hover:bg-stone-100
+				`}
+			>
+				{value}
+			</button>
+		</MainStatDialog>
 	</div>
 );
 export const MainStats: React.FC = () => {
