@@ -1,13 +1,14 @@
 import { Schema, queryDb, sql } from "@livestore/livestore";
 import { tables } from "./schema.js";
 
-export const statAndModifier$ = (characterSheetId: string, stat: string) =>
+export const statsAndModifiers$ = (characterSheetId: string) =>
 	queryDb({
-		query: sql`select floor((coalesce(sum(value),0)-10)/2) as modifier, coalesce(sum(value),0) as value from statAdjustments where characterSheetId = '${characterSheetId}' and stat = '${stat}'`,
+		query: sql`select stat, floor((coalesce(sum(value),0)-10)/2) as modifier, coalesce(sum(value),0) as value from statAdjustments where characterSheetId = '${characterSheetId}' group by stat`,
 		schema: Schema.Struct({
+			stat: Schema.String,
 			value: Schema.Number,
 			modifier: Schema.Number,
-		}).pipe(Schema.Array, Schema.headOrElse()),
+		}).pipe(Schema.Array),
 	});
 
 export const savingThrowProficiencies$ = (characterSheetId: string) =>
