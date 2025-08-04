@@ -1,3 +1,5 @@
+import { promises as fs } from "node:fs";
+import { join } from "node:path";
 import { makeAdapter } from "@livestore/adapter-node";
 import { LiveStoreContext } from "@livestore/react";
 import { createStorePromise } from "@livestore/livestore";
@@ -6,12 +8,19 @@ import { schema } from "@/livestore/schema";
 
 /**
  * Test helper that creates a store and wrapper for testing hooks that depend on LiveStore
- * @returns An object containing the store and wrapper component
+ * @returns An object containing the store, wrapper component, and cleanup function
  */
 export const createStoreWrapper = async () => {
-	// TODO: dynamically create a sub folder for the base directory and clean it up after the test
+	// Create a unique temporary directory for this test
+	const testId = `test-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
+	const tempDir = join("tmp", testId);
+
+	// Ensure the tmp directory exists
+	await fs.mkdir("tmp", { recursive: true });
+	await fs.mkdir(tempDir, { recursive: true });
+
 	const adapter = makeAdapter({
-		storage: { type: "fs", baseDirectory: "tmp" },
+		storage: { type: "fs", baseDirectory: tempDir },
 	});
 
 	const store = await createStorePromise({
@@ -27,5 +36,14 @@ export const createStoreWrapper = async () => {
 		</LiveStoreContext.Provider>
 	);
 
-	return { store, wrapper };
+	const cleanup = async () => {
+		try {
+			await fs.rm(tempDir, { recursive: true, force: true });
+		} catch (error) {
+			// Ignore cleanup errors - directory might not exist or be already cleaned up
+			console.warn(`Failed to cleanup test directory ${tempDir}:`, error);
+		}
+	};
+
+	return { store, wrapper, cleanup };
 };
