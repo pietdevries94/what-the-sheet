@@ -41,6 +41,7 @@ export const createStoreWrapper = async (
 	// Register cleanup function with vitest's onTestFinished
 	onTestFinished(async () => {
 		try {
+			await store.shutdown();
 			await fs.rm(tempDir, { recursive: true, force: true });
 		} catch (error) {
 			// Ignore cleanup errors - directory might not exist or be already cleaned up
