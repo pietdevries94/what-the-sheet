@@ -1,3 +1,5 @@
+import { useContext } from "react";
+import { CharacterSheetContext } from "./CharacterSheetContext";
 import type React from "react";
 import type { DndStat } from "@/dndTypes";
 import { useStatAndModifier } from "@/hooks/characterSheet/useStatAndModifier";
@@ -6,7 +8,8 @@ const StatBlock: React.FC<{ stat: DndStat; label: string }> = ({
 	stat,
 	label,
 }) => {
-	const { value, modifier } = useStatAndModifier(stat);
+	const characterSheetId = useContext(CharacterSheetContext);
+	const { value, modifier } = useStatAndModifier(characterSheetId, stat);
 	return (
 		<div className="relative flex flex-col items-center justify-center py-2">
 			<div

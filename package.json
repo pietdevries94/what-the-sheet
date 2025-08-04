@@ -43,6 +43,7 @@
 	},
 	"devDependencies": {
 		"@eslint/js": "catalog:",
+		"@livestore/adapter-node": "catalog:",
 		"@tanstack/eslint-config": "catalog:",
 		"@testing-library/dom": "catalog:",
 		"@testing-library/react": "catalog:",
