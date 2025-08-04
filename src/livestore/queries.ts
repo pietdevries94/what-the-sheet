@@ -1,4 +1,5 @@
 import { Schema, queryDb, sql } from "@livestore/livestore";
+import { dndStats } from "../dndTypes.js";
 import { tables } from "./schema.js";
 
 export const statAndModifier$ = (characterSheetId: string, stat: string) =>
@@ -8,6 +9,24 @@ export const statAndModifier$ = (characterSheetId: string, stat: string) =>
 			value: Schema.Number,
 			modifier: Schema.Number,
 		}).pipe(Schema.Array, Schema.headOrElse()),
+	});
+
+export const allStatsAndModifiers$ = (characterSheetId: string) =>
+	queryDb({
+		query: sql`
+			select 
+				stat,
+				floor((coalesce(sum(value),0)-10)/2) as modifier, 
+				coalesce(sum(value),0) as value 
+			from statAdjustments 
+			where characterSheetId = '${characterSheetId}' 
+			group by stat
+		`,
+		schema: Schema.Struct({
+			stat: Schema.String,
+			value: Schema.Number,
+			modifier: Schema.Number,
+		}).pipe(Schema.Array),
 	});
 
 export const savingThrowProficiencies$ = (characterSheetId: string) =>
