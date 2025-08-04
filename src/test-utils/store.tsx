@@ -8,15 +8,17 @@ import { schema } from "@/livestore/schema";
 
 /**
  * Test helper that creates a store and wrapper for testing hooks that depend on LiveStore
- * @returns An object containing the store, wrapper component, and cleanup function
+ * @param onTestFinished - Vitest's onTestFinished callback for cleanup registration
+ * @returns An object containing the store and wrapper component
  */
-export const createStoreWrapper = async () => {
+export const createStoreWrapper = async (
+	onTestFinished: (fn: () => void | Promise<void>) => void,
+) => {
 	// Create a unique temporary directory for this test
 	const testId = `test-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
 	const tempDir = join("tmp", testId);
 
-	// Ensure the tmp directory exists
-	await fs.mkdir("tmp", { recursive: true });
+	// Create the temporary directory (recursive option handles parent directories)
 	await fs.mkdir(tempDir, { recursive: true });
 
 	const adapter = makeAdapter({
@@ -36,14 +38,15 @@ export const createStoreWrapper = async () => {
 		</LiveStoreContext.Provider>
 	);
 
-	const cleanup = async () => {
+	// Register cleanup function with vitest's onTestFinished
+	onTestFinished(async () => {
 		try {
 			await fs.rm(tempDir, { recursive: true, force: true });
 		} catch (error) {
 			// Ignore cleanup errors - directory might not exist or be already cleaned up
 			console.warn(`Failed to cleanup test directory ${tempDir}:`, error);
 		}
-	};
+	});
 
-	return { store, wrapper, cleanup };
+	return { store, wrapper };
 };
