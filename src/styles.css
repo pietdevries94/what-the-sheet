@@ -1,5 +1,7 @@
-@import "@fontsource/caudex/latin.css";
-@import "@fontsource/caudex/latin-italic.css";
+@import "@fontsource/caudex/400.css";
+@import "@fontsource/caudex/700.css";
+@import "@fontsource/caudex/400-italic.css";
+@import "@fontsource/caudex/700-italic.css";
 @import "tailwindcss";
 @plugin "tailwindcss-animate";
 
