@@ -7,27 +7,37 @@ import { useStatAndModifier } from "./useStatAndModifier";
 import type React from "react";
 import { schema } from "@/livestore/schema";
 
+/**
+ * Test helper that creates a store and wrapper for testing hooks that depend on LiveStore
+ * @returns An object containing the store and wrapper component
+ */
+const createStoreWrapper = async () => {
+	// TODO: dynamically create a sub folder for the base directory and clean it up after the test
+	const adapter = makeAdapter({
+		storage: { type: "fs", baseDirectory: "tmp" },
+	});
+
+	const store = await createStorePromise({
+		adapter,
+		schema,
+		storeId: "test",
+	});
+
+	const wrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+		// @ts-expect-error I put a node store in a React context, which is not the intended use case, but it works for testing
+		<LiveStoreContext.Provider value={{ stage: "running", store }}>
+			{children}
+		</LiveStoreContext.Provider>
+	);
+
+	return { store, wrapper };
+};
+
 describe("useStatAndModifier", () => {
 	it("retrieves the correct stat and modifier", async () => {
 		const characterSheetId = "test-character-sheet";
 
-		// TODO: dynamically create a sub folder for the base directory and clean it up after the test
-		const adapter = makeAdapter({
-			storage: { type: "fs", baseDirectory: "tmp" },
-		});
-
-		const store = await createStorePromise({
-			adapter,
-			schema,
-			storeId: "test",
-		});
-
-		const wrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-			// @ts-expect-error I put a node store in a React context, which is not the intended use case, but it works for testing
-			<LiveStoreContext.Provider value={{ stage: "running", store }}>
-				{children}
-			</LiveStoreContext.Provider>
-		);
+		const { wrapper } = await createStoreWrapper();
 
 		const { result } = renderHook(
 			() => useStatAndModifier(characterSheetId, "constitution"),
