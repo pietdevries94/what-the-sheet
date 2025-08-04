@@ -9,6 +9,9 @@ catalogs:
     '@eslint/js':
       specifier: ^9.32.0
       version: 9.32.0
+    '@fontsource/caudex':
+      specifier: ^5.2.6
+      version: 5.2.6
     '@livestore/adapter-node':
       specifier: ^0.3.1
       version: 0.3.1
@@ -158,6 +161,9 @@ importers:
 
   .:
     dependencies:
+      '@fontsource/caudex':
+        specifier: 'catalog:'
+        version: 5.2.6
       '@livestore/adapter-web':
         specifier: 'catalog:'
         version: 0.3.1(505c75a1204e4cf21acbbd6b3e225a6b)
@@ -1228,6 +1234,9 @@ packages:
 
   '@floating-ui/utils@0.2.10':
     resolution: {integrity: sha512-aGTxbpbg8/b5JfU1HXSrbH3wXZuLPJcNEcZQFMxLs3oSzgtVu6nFPkbbGGUvBcUjKV2YyB9Wxxabo+HEH9tcRQ==}
+
+  '@fontsource/caudex@5.2.6':
+    resolution: {integrity: sha512-P7pEnmBa3Rzlyzu1wxXfKdE9l6sA9fFPt/HsjAkXOfnCPgVwc3Hv+VB7Z+kz2rmv3E9q69WR4nzoL8Z+RPxxGQ==}
 
   '@humanfs/core@0.19.1':
     resolution: {integrity: sha512-5DyQ4+1JEUzejeK1JGICcideyfUbGixgS9jNgex5nqkW+cY7WZhxBigmieN5Qnw9ZosSNVC9KQKyb+GUaGyKUA==}
@@ -5693,6 +5702,8 @@ snapshots:
       react-dom: 19.1.1(react@19.1.1)
 
   '@floating-ui/utils@0.2.10': {}
+
+  '@fontsource/caudex@5.2.6': {}
 
   '@humanfs/core@0.19.1': {}
 

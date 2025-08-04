@@ -13,6 +13,7 @@
 		"check": "eslint --fix && prettier --write ."
 	},
 	"dependencies": {
+		"@fontsource/caudex": "catalog:",
 		"@livestore/adapter-web": "catalog:",
 		"@livestore/devtools-vite": "catalog:",
 		"@livestore/livestore": "catalog:",

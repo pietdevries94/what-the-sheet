@@ -1,5 +1,6 @@
 catalog:
   '@eslint/js': ^9.32.0
+  '@fontsource/caudex': ^5.2.6
   '@livestore/adapter-node': ^0.3.1
   '@livestore/adapter-web': ^0.3.1
   '@livestore/devtools-vite': ^0.3.1
