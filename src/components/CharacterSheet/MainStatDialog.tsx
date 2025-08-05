@@ -4,7 +4,7 @@ import React, { useContext } from "react";
 import { CharacterSheetContext } from "./CharacterSheetContext";
 import type { DndStat } from "@/dndTypes";
 import { events } from "@/livestore/schema";
-import { Dialog } from "@/components/ui/Dialog";
+import { GeneralDialog } from "@/components/ui/GeneralDialog";
 
 export const MainStatDialog: React.FC<{
 	children: React.ReactNode;
@@ -27,7 +27,7 @@ export const MainStatDialog: React.FC<{
 	};
 
 	return (
-		<Dialog
+		<GeneralDialog
 			title={stat.charAt(0).toUpperCase() + stat.slice(1)}
 			trigger={children}
 		>
@@ -47,6 +47,6 @@ export const MainStatDialog: React.FC<{
 				Create Stat Adjustment
 			</button>
 			<RadixDialog.Close>Close</RadixDialog.Close>
-		</Dialog>
+		</GeneralDialog>
 	);
 };

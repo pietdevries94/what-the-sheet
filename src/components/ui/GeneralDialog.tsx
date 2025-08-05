@@ -1,13 +1,17 @@
 import { Dialog as RadixDialog } from "radix-ui";
 import React from "react";
 
-export interface DialogProps {
+export interface GeneralDialogProps {
 	children: React.ReactNode;
 	title: string;
 	trigger: React.ReactNode;
 }
 
-export const Dialog: React.FC<DialogProps> = ({ children, title, trigger }) => (
+export const GeneralDialog: React.FC<GeneralDialogProps> = ({
+	children,
+	title,
+	trigger,
+}) => (
 	<RadixDialog.Root>
 		<RadixDialog.Trigger asChild={true}>{trigger}</RadixDialog.Trigger>
 		<RadixDialog.Portal>
