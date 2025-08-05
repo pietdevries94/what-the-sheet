@@ -2,6 +2,7 @@
 @import "@fontsource/caudex/700.css";
 @import "@fontsource/caudex/400-italic.css";
 @import "@fontsource/caudex/700-italic.css";
+@import "@fontsource/handlee/400.css";
 @import "tailwindcss";
 @plugin "tailwindcss-animate";
 
@@ -9,4 +10,5 @@
 	--color-background: oklch(0.9967 0.0054 95.1);
 	--color-foreground: oklch(0.145 0 0);
 	--font-serif: "Caudex", serif;
+	--font-handwritten: "Handlee", cursive;
 }

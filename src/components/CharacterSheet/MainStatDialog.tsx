@@ -38,6 +38,7 @@ export const MainStatDialog: React.FC<{
 					<div
 						className={`
 							relative size-full border border-amber-100 bg-amber-50 p-[25px]
+							font-handwritten
 							before:absolute before:top-2 before:-left-2 before:-z-1 before:size-full
 							before:bg-amber-800/10 before:blur-sm
 						`}
