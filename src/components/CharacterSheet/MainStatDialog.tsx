@@ -1,10 +1,10 @@
 import { useStore } from "@livestore/react";
-import { Dialog } from "radix-ui";
+import { Dialog as RadixDialog } from "radix-ui";
 import React, { useContext } from "react";
 import { CharacterSheetContext } from "./CharacterSheetContext";
 import type { DndStat } from "@/dndTypes";
 import { events } from "@/livestore/schema";
-import { GeneralDialog } from "@/components/ui";
+import { Dialog } from "@/components/ui/Dialog";
 
 export const MainStatDialog: React.FC<{
 	children: React.ReactNode;
@@ -27,7 +27,7 @@ export const MainStatDialog: React.FC<{
 	};
 
 	return (
-		<GeneralDialog
+		<Dialog
 			title={stat.charAt(0).toUpperCase() + stat.slice(1)}
 			trigger={children}
 		>
@@ -46,7 +46,7 @@ export const MainStatDialog: React.FC<{
 			>
 				Create Stat Adjustment
 			</button>
-			<Dialog.Close>Close</Dialog.Close>
-		</GeneralDialog>
+			<RadixDialog.Close>Close</RadixDialog.Close>
+		</Dialog>
 	);
 };
