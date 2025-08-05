@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { render, screen, waitFor, within } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import { MainStats } from "./MainStats";
 import { CharacterSheetContext } from "./CharacterSheetContext";
 import { createStoreWrapper } from "@/test-utils/store";
@@ -80,29 +80,20 @@ describe("MainStats", () => {
 
 		render(<MainStats />, { wrapper: TestWrapper });
 
-		// Wait for the stats to update and check specific stat values and modifiers in their correct blocks
-		await waitFor(() => {
-			const constitutionBlocks = screen.getAllByTestId(
-				"stat-block-constitution",
-			);
-			const constitutionBlock =
-				constitutionBlocks[constitutionBlocks.length - 1]; // Get the last/current one
-			expect(within(constitutionBlock).getByText("16")).toBeDefined();
-			expect(within(constitutionBlock).getByText("+3")).toBeDefined();
-		});
+		// Check specific stat values and modifiers in their correct blocks
+		const constitutionBlocks = screen.getAllByTestId("stat-block-constitution");
+		const constitutionBlock = constitutionBlocks[constitutionBlocks.length - 1]; // Get the last/current one
+		expect(within(constitutionBlock).getByText("16")).toBeDefined();
+		expect(within(constitutionBlock).getByText("+3")).toBeDefined();
 
-		await waitFor(() => {
-			const dexterityBlocks = screen.getAllByTestId("stat-block-dexterity");
-			const dexterityBlock = dexterityBlocks[dexterityBlocks.length - 1]; // Get the last/current one
-			expect(within(dexterityBlock).getByText("14")).toBeDefined();
-			expect(within(dexterityBlock).getByText("+2")).toBeDefined();
-		});
+		const dexterityBlocks = screen.getAllByTestId("stat-block-dexterity");
+		const dexterityBlock = dexterityBlocks[dexterityBlocks.length - 1]; // Get the last/current one
+		expect(within(dexterityBlock).getByText("14")).toBeDefined();
+		expect(within(dexterityBlock).getByText("+2")).toBeDefined();
 
-		await waitFor(() => {
-			const strengthBlocks = screen.getAllByTestId("stat-block-strength");
-			const strengthBlock = strengthBlocks[strengthBlocks.length - 1]; // Get the last/current one
-			expect(within(strengthBlock).getByText("8")).toBeDefined();
-			expect(within(strengthBlock).getByText("-1")).toBeDefined();
-		});
+		const strengthBlocks = screen.getAllByTestId("stat-block-strength");
+		const strengthBlock = strengthBlocks[strengthBlocks.length - 1]; // Get the last/current one
+		expect(within(strengthBlock).getByText("8")).toBeDefined();
+		expect(within(strengthBlock).getByText("-1")).toBeDefined();
 	});
 });
