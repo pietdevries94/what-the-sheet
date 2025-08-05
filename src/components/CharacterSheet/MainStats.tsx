@@ -11,7 +11,10 @@ const StatBlock: React.FC<{
 	modifier: number;
 	label: string;
 }> = ({ value, modifier, label, stat }) => (
-	<div className="relative flex flex-col items-center justify-center py-2">
+	<div
+		className="relative flex flex-col items-center justify-center py-2"
+		data-testid={`stat-block-${stat}`}
+	>
 		<div
 			className={`
 				absolute top-0 flex h-5 w-9 items-center justify-center rounded-md border
