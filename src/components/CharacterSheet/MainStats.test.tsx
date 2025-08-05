@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import { MainStats } from "./MainStats";
 import { CharacterSheetContext } from "./CharacterSheetContext";
 import { createStoreWrapper } from "@/test-utils/store";
@@ -80,14 +80,29 @@ describe("MainStats", () => {
 
 		render(<MainStats />, { wrapper: TestWrapper });
 
-		// Check specific stat values and modifiers
-		expect(screen.getByText("16")).toBeDefined(); // Constitution value
-		expect(screen.getByText("+3")).toBeDefined(); // Constitution modifier
+		// Wait for the stats to update and check specific stat values and modifiers in their correct blocks
+		await waitFor(() => {
+			const constitutionBlocks = screen.getAllByTestId(
+				"stat-block-constitution",
+			);
+			const constitutionBlock =
+				constitutionBlocks[constitutionBlocks.length - 1]; // Get the last/current one
+			expect(within(constitutionBlock).getByText("16")).toBeDefined();
+			expect(within(constitutionBlock).getByText("+3")).toBeDefined();
+		});
 
-		expect(screen.getByText("14")).toBeDefined(); // Dexterity value
-		expect(screen.getByText("+2")).toBeDefined(); // Dexterity modifier
+		await waitFor(() => {
+			const dexterityBlocks = screen.getAllByTestId("stat-block-dexterity");
+			const dexterityBlock = dexterityBlocks[dexterityBlocks.length - 1]; // Get the last/current one
+			expect(within(dexterityBlock).getByText("14")).toBeDefined();
+			expect(within(dexterityBlock).getByText("+2")).toBeDefined();
+		});
 
-		expect(screen.getByText("8")).toBeDefined(); // Strength value
-		expect(screen.getByText("-1")).toBeDefined(); // Strength modifier
+		await waitFor(() => {
+			const strengthBlocks = screen.getAllByTestId("stat-block-strength");
+			const strengthBlock = strengthBlocks[strengthBlocks.length - 1]; // Get the last/current one
+			expect(within(strengthBlock).getByText("8")).toBeDefined();
+			expect(within(strengthBlock).getByText("-1")).toBeDefined();
+		});
 	});
 });
