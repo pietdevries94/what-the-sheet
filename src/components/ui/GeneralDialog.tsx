@@ -1,4 +1,4 @@
-import { Dialog as RadixDialog } from "radix-ui";
+import { Dialog } from "radix-ui";
 import React from "react";
 
 export interface GeneralDialogProps {
@@ -12,10 +12,10 @@ export const GeneralDialog: React.FC<GeneralDialogProps> = ({
 	title,
 	trigger,
 }) => (
-	<RadixDialog.Root>
-		<RadixDialog.Trigger asChild={true}>{trigger}</RadixDialog.Trigger>
-		<RadixDialog.Portal>
-			<RadixDialog.Content
+	<Dialog.Root>
+		<Dialog.Trigger asChild={true}>{trigger}</Dialog.Trigger>
+		<Dialog.Portal>
+			<Dialog.Content
 				className={`
 					fixed top-1/2 left-1/2 max-h-[85vh] w-[90vw] max-w-[500px] -translate-1/2
 					focus:outline-none
@@ -29,10 +29,10 @@ export const GeneralDialog: React.FC<GeneralDialogProps> = ({
 						before:bg-amber-800/10 before:blur-sm
 					`}
 				>
-					<RadixDialog.Title>{title}</RadixDialog.Title>
+					<Dialog.Title>{title}</Dialog.Title>
 					{children}
 				</div>
-			</RadixDialog.Content>
-		</RadixDialog.Portal>
-	</RadixDialog.Root>
+			</Dialog.Content>
+		</Dialog.Portal>
+	</Dialog.Root>
 );
