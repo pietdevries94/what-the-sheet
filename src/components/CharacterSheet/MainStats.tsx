@@ -1,7 +1,6 @@
-import { useContext } from "react";
+import React, { useContext } from "react";
 import { CharacterSheetContext } from "./CharacterSheetContext";
 import { MainStatDialog } from "./MainStatDialog";
-import type React from "react";
 import type { DndStat } from "@/dndTypes";
 import { useStatsAndModifiers } from "@/hooks/characterSheet/useStatsAndModifiers";
 
@@ -10,44 +9,55 @@ const StatBlock: React.FC<{
 	value: number;
 	modifier: number;
 	label: string;
-}> = ({ value, modifier, label, stat }) => (
-	<div
-		className="relative flex flex-col items-center justify-center py-2"
-		data-testid={`stat-block-${stat}`}
-	>
+}> = ({ value, modifier, label, stat }) => {
+	const [glow, setGlow] = React.useState(false);
+	const [prevValue, setPrevValue] = React.useState(value);
+	if (prevValue !== value) {
+		setPrevValue(value);
+		setGlow(true);
+		setTimeout(() => setGlow(false), 1000);
+	}
+	return (
 		<div
-			className={`
-				absolute top-0 flex h-5 w-9 items-center justify-center rounded-md border
-				border-stone-400 bg-background text-center text-sm leading-none
-				tracking-wide text-stone-500
-			`}
+			className="relative flex flex-col items-center justify-center py-2"
+			data-testid={`stat-block-${stat}`}
 		>
-			{label}
-		</div>
-		<span
-			className={`
-				flex h-14 w-12 items-center justify-center rounded-md border
-				border-stone-400 text-lg text-stone-600
-			`}
-		>
-			{modifier && modifier >= 0 ? "+" : ""}
-			{modifier}
-		</span>
-		<MainStatDialog stat={stat}>
-			<button
-				type="button"
+			<div
 				className={`
-					absolute bottom-0 flex h-5 w-6 items-center justify-center rounded-md
-					border border-stone-400 bg-background text-center text-sm leading-none
-					text-stone-500
-					hover:bg-stone-100
+					absolute top-0 flex h-5 w-9 items-center justify-center rounded-md border
+					border-stone-400 bg-background text-center text-sm leading-none
+					tracking-wide text-stone-500
 				`}
 			>
-				{value}
-			</button>
-		</MainStatDialog>
-	</div>
-);
+				{label}
+			</div>
+			<span
+				className={`
+					flex h-14 w-12 items-center justify-center rounded-md border
+					border-stone-400 text-lg transition-colors
+					${glow ? "text-blue-500" : `text-stone-600`}
+				`}
+			>
+				{modifier && modifier >= 0 ? "+" : ""}
+				{modifier}
+			</span>
+			<MainStatDialog stat={stat}>
+				<button
+					type="button"
+					className={`
+						absolute bottom-0 flex h-5 w-6 items-center justify-center rounded-md
+						border border-stone-400 bg-background text-center text-sm leading-none
+						text-stone-500
+						hover:bg-stone-100
+					`}
+				>
+					{value}
+				</button>
+			</MainStatDialog>
+		</div>
+	);
+};
+
 export const MainStats: React.FC = () => {
 	const characterSheetId = useContext(CharacterSheetContext);
 	const stats = useStatsAndModifiers(characterSheetId);
