@@ -17,6 +17,7 @@ export const tables = {
 			characterSheetId: State.SQLite.text(),
 			stat: State.SQLite.text(),
 			value: State.SQLite.integer(),
+			description: State.SQLite.text({ default: "" }),
 		},
 	}),
 	savingThrowProficiencies: State.SQLite.table({

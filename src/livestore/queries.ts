@@ -1,5 +1,6 @@
 import { Schema, queryDb, sql } from "@livestore/livestore";
 import { tables } from "./schema.js";
+import type { DndStat } from "@/dndTypes.js";
 
 export const statsAndModifiers$ = (characterSheetId: string) =>
 	queryDb({
@@ -23,4 +24,14 @@ export const skillProficiencies$ = (characterSheetId: string) =>
 		tables.skillProficiencies
 			.select("skill", "expert")
 			.where({ characterSheetId }),
+	);
+
+export const statAdjustmentsForStat$ = (
+	characterSheetId: string,
+	stat: DndStat,
+) =>
+	queryDb(
+		tables.statAdjustments
+			.select("value", "description")
+			.where({ characterSheetId, stat }),
 	);
