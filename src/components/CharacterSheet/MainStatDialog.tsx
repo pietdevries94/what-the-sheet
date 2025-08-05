@@ -29,37 +29,39 @@ export const MainStatDialog: React.FC<{
 		<Dialog.Root>
 			<Dialog.Trigger asChild={true}>{children}</Dialog.Trigger>
 			<Dialog.Portal>
-				<Dialog.Overlay className={`fixed inset-0 bg-stone-600/20`} />
 				<Dialog.Content
 					className={`
 						fixed top-1/2 left-1/2 max-h-[85vh] w-[90vw] max-w-[500px] -translate-1/2
-						rounded-md bg-white p-[25px] shadow-(--shadow-6)
 						focus:outline-none
 					`}
 				>
-					<Dialog.Title>Wow, so cool</Dialog.Title>
-					<Dialog.Description>This is a description</Dialog.Description>
-					<input
-						type="number"
-						value={statAdjustment}
-						onChange={(e) => setStatAdjustment(Number(e.target.value))}
-						className="w-full rounded-md border border-stone-300 p-2"
-						placeholder="Enter stat adjustment"
-					/>
-					<button
-						type="button"
-						onClick={() => {
-							statAdjustmentCreated();
-							setStatAdjustment(0);
-						}}
+					<div
 						className={`
-							mt-4 rounded-md bg-blue-500 px-4 py-2 text-white
-							hover:bg-blue-600
+							relative size-full border border-amber-100 bg-amber-50 p-[25px]
+							before:absolute before:top-2 before:-left-2 before:-z-1 before:size-full
+							before:bg-amber-800/10 before:blur-sm
 						`}
 					>
-						Create Stat Adjustment
-					</button>
-					<Dialog.Close>Close</Dialog.Close>
+						<Dialog.Title>
+							{stat.charAt(0).toUpperCase() + stat.slice(1)}
+						</Dialog.Title>
+						<input
+							type="number"
+							value={statAdjustment}
+							onChange={(e) => setStatAdjustment(Number(e.target.value))}
+							placeholder="Enter stat adjustment"
+						/>
+						<button
+							type="button"
+							onClick={() => {
+								statAdjustmentCreated();
+								setStatAdjustment(0);
+							}}
+						>
+							Create Stat Adjustment
+						</button>
+						<Dialog.Close>Close</Dialog.Close>
+					</div>
 				</Dialog.Content>
 			</Dialog.Portal>
 		</Dialog.Root>
