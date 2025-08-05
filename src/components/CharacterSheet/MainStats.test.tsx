@@ -11,14 +11,17 @@ describe("MainStats", () => {
 	}) => {
 		const characterSheetId = "test-character-sheet";
 
-		const { wrapper } = await createStoreWrapper(onTestFinished);
+		const { wrapper: LiveStoreWrapper } =
+			await createStoreWrapper(onTestFinished);
 
 		const TestWrapper: React.FC<{ children: React.ReactNode }> = ({
 			children,
 		}) => (
-			<CharacterSheetContext.Provider value={characterSheetId}>
-				{wrapper({ children })}
-			</CharacterSheetContext.Provider>
+			<LiveStoreWrapper>
+				<CharacterSheetContext.Provider value={characterSheetId}>
+					{children}
+				</CharacterSheetContext.Provider>
+			</LiveStoreWrapper>
 		);
 
 		render(<MainStats />, { wrapper: TestWrapper });
@@ -45,7 +48,8 @@ describe("MainStats", () => {
 	}) => {
 		const characterSheetId = "test-character-sheet";
 
-		const { store, wrapper } = await createStoreWrapper(onTestFinished);
+		const { store, wrapper: LiveStoreWrapper } =
+			await createStoreWrapper(onTestFinished);
 
 		// Insert test data for different stats
 		store.sqliteDbWrapper.execute(
@@ -73,9 +77,11 @@ describe("MainStats", () => {
 		const TestWrapper: React.FC<{ children: React.ReactNode }> = ({
 			children,
 		}) => (
-			<CharacterSheetContext.Provider value={characterSheetId}>
-				{wrapper({ children })}
-			</CharacterSheetContext.Provider>
+			<LiveStoreWrapper>
+				<CharacterSheetContext.Provider value={characterSheetId}>
+					{children}
+				</CharacterSheetContext.Provider>
+			</LiveStoreWrapper>
 		);
 
 		render(<MainStats />, { wrapper: TestWrapper });
