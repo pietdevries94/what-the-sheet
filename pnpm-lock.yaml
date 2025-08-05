@@ -12,6 +12,9 @@ catalogs:
     '@fontsource/caudex':
       specifier: ^5.2.6
       version: 5.2.6
+    '@fontsource/handlee':
+      specifier: ^5.2.6
+      version: 5.2.6
     '@livestore/adapter-node':
       specifier: ^0.3.1
       version: 0.3.1
@@ -150,6 +153,9 @@ importers:
   .:
     dependencies:
       '@fontsource/caudex':
+        specifier: 'catalog:'
+        version: 5.2.6
+      '@fontsource/handlee':
         specifier: 'catalog:'
         version: 5.2.6
       '@livestore/adapter-web':
@@ -1213,6 +1219,9 @@ packages:
 
   '@fontsource/caudex@5.2.6':
     resolution: {integrity: sha512-P7pEnmBa3Rzlyzu1wxXfKdE9l6sA9fFPt/HsjAkXOfnCPgVwc3Hv+VB7Z+kz2rmv3E9q69WR4nzoL8Z+RPxxGQ==}
+
+  '@fontsource/handlee@5.2.6':
+    resolution: {integrity: sha512-yd8BkPsnDwD6VU8rteU/wYgO88C+b6FGHRzV9qd96ye1vKLZRvoExebSkIUbMpCPhbdolqwan3viota7bLNzxQ==}
 
   '@humanfs/core@0.19.1':
     resolution: {integrity: sha512-5DyQ4+1JEUzejeK1JGICcideyfUbGixgS9jNgex5nqkW+cY7WZhxBigmieN5Qnw9ZosSNVC9KQKyb+GUaGyKUA==}
@@ -6092,6 +6101,8 @@ snapshots:
   '@floating-ui/utils@0.2.10': {}
 
   '@fontsource/caudex@5.2.6': {}
+
+  '@fontsource/handlee@5.2.6': {}
 
   '@humanfs/core@0.19.1': {}
 
