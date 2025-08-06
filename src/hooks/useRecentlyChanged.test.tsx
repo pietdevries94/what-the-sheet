@@ -17,6 +17,24 @@ describe("useRecentlyChanged", () => {
 		expect(result.current).toBe(false);
 	});
 
+	it("returns true immediately after value change", () => {
+		let value = "initial";
+		const { result, rerender } = renderHook(() => useRecentlyChanged(value));
+
+		expect(result.current).toBe(false);
+
+		// Change the value
+		value = "changed";
+		rerender();
+
+		// Advance timers to trigger the immediate setState
+		act(() => {
+			vi.advanceTimersByTime(1);
+		});
+
+		expect(result.current).toBe(true);
+	});
+
 	it("returns false after default duration (1000ms)", () => {
 		let value = "initial";
 		const { result, rerender } = renderHook(() => useRecentlyChanged(value));
@@ -128,6 +146,42 @@ describe("useRecentlyChanged", () => {
 			vi.advanceTimersByTime(150);
 		});
 
+		expect(result.current).toBe(false);
+	});
+
+	it("stays true if value changes again during timeout period", () => {
+		let value = "initial";
+		const { result, rerender } = renderHook(() =>
+			useRecentlyChanged(value, 1000),
+		);
+
+		// Change value first time
+		value = "changed1";
+		rerender();
+
+		// Advance time partially
+		act(() => {
+			vi.advanceTimersByTime(500);
+		});
+
+		// Change value again before timeout
+		value = "changed2";
+		rerender();
+
+		// Advance time past original timeout but not past new timeout
+		act(() => {
+			vi.advanceTimersByTime(700);
+		});
+
+		// Should still be true because new timeout was set
+		expect(result.current).toBe(true);
+
+		// Advance past new timeout
+		act(() => {
+			vi.advanceTimersByTime(400);
+		});
+
+		// Now should be false
 		expect(result.current).toBe(false);
 	});
 });

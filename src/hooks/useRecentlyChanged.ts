@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React from "react";
 
 /**
  * Hook that tracks when a value has recently changed and returns a boolean
@@ -13,35 +13,30 @@ export function useRecentlyChanged(
 	duration: number = 1000,
 ): boolean {
 	const [recentlyChanged, setRecentlyChanged] = React.useState(false);
-	const [prevValue, setPrevValue] = React.useState(value);
-	const timeoutRef = useRef<number | null>(null);
+	const prevValueRef = React.useRef(value);
+	const timeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 
-	// Clean up timeout on unmount
-	useEffect(() => {
+	React.useEffect(() => {
 		return () => {
-			if (timeoutRef.current !== null) {
-				clearTimeout(timeoutRef.current);
-			}
+			if (timeoutRef.current) clearTimeout(timeoutRef.current);
 		};
 	}, []);
 
-	// Handle value changes - mimic the original logic
-	if (prevValue !== value) {
-		setPrevValue(value);
+	if (prevValueRef.current !== value) {
+		prevValueRef.current = value;
 
-		// Clear any existing timeout
 		if (timeoutRef.current !== null) {
 			clearTimeout(timeoutRef.current);
 		}
 
-		// Set the flag immediately
 		setTimeout(() => setRecentlyChanged(true), 0);
 
-		// Clear the flag after the specified duration
 		timeoutRef.current = setTimeout(() => {
 			setRecentlyChanged(false);
 			timeoutRef.current = null;
 		}, duration);
+
+		return recentlyChanged;
 	}
 
 	return recentlyChanged;
