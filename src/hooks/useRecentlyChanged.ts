@@ -22,22 +22,20 @@ export function useRecentlyChanged(
 		};
 	}, []);
 
-	if (prevValueRef.current !== value) {
-		prevValueRef.current = value;
+	if (prevValueRef.current == value) return recentlyChanged;
 
-		if (timeoutRef.current !== null) {
-			clearTimeout(timeoutRef.current);
-		}
+	prevValueRef.current = value;
 
-		setTimeout(() => setRecentlyChanged(true), 0);
-
-		timeoutRef.current = setTimeout(() => {
-			setRecentlyChanged(false);
-			timeoutRef.current = null;
-		}, duration);
-
-		return recentlyChanged;
+	if (timeoutRef.current !== null) {
+		clearTimeout(timeoutRef.current);
 	}
+
+	setTimeout(() => setRecentlyChanged(true), 0);
+
+	timeoutRef.current = setTimeout(() => {
+		setRecentlyChanged(false);
+		timeoutRef.current = null;
+	}, duration);
 
 	return recentlyChanged;
 }
