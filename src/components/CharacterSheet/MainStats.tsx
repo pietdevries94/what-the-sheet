@@ -3,17 +3,7 @@ import { CharacterSheetContext } from "./CharacterSheetContext";
 import { MainStatDialog } from "./MainStatDialog";
 import type { DndStat } from "@/dndTypes";
 import { useStatsAndModifiers } from "@/hooks/characterSheet/useStatsAndModifiers";
-
-function useGlow(value: unknown): boolean {
-	const [glow, setGlow] = React.useState(false);
-	const [prevValue, setPrevValue] = React.useState(value);
-	if (prevValue !== value) {
-		setPrevValue(value);
-		setTimeout(() => setGlow(true), 0);
-		setTimeout(() => setGlow(false), 1000);
-	}
-	return glow;
-}
+import { useRecentlyChanged } from "@/hooks/useRecentlyChanged";
 
 const StatBlock: React.FC<{
 	stat: DndStat;
@@ -21,8 +11,8 @@ const StatBlock: React.FC<{
 	modifier: number;
 	label: string;
 }> = ({ value, modifier, label, stat }) => {
-	const glowValue = useGlow(value);
-	const glowModifier = useGlow(modifier);
+	const glowValue = useRecentlyChanged(value);
+	const glowModifier = useRecentlyChanged(modifier);
 	return (
 		<div
 			className="relative flex flex-col items-center justify-center py-2"
