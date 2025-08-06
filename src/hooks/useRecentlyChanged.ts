@@ -22,22 +22,22 @@ export function useRecentlyChanged(
 		};
 	}, []);
 
-	React.useEffect(() => {
-		if (prevValueRef.current === value) return;
-
+	if (prevValueRef.current !== value) {
 		prevValueRef.current = value;
 
 		if (timeoutRef.current !== null) {
 			clearTimeout(timeoutRef.current);
 		}
 
-		setRecentlyChanged(true);
+		setTimeout(() => setRecentlyChanged(true), 0);
 
 		timeoutRef.current = setTimeout(() => {
 			setRecentlyChanged(false);
 			timeoutRef.current = null;
 		}, duration);
-	}, [value, duration]);
+
+		return recentlyChanged;
+	}
 
 	return recentlyChanged;
 }
