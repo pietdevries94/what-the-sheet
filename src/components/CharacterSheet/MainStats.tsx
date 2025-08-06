@@ -4,19 +4,25 @@ import { MainStatDialog } from "./MainStatDialog";
 import type { DndStat } from "@/dndTypes";
 import { useStatsAndModifiers } from "@/hooks/characterSheet/useStatsAndModifiers";
 
+function useGlow(value: unknown): boolean {
+	const [glow, setGlow] = React.useState(false);
+	const [prevValue, setPrevValue] = React.useState(value);
+	if (prevValue !== value) {
+		setPrevValue(value);
+		setTimeout(() => setGlow(true), 0);
+		setTimeout(() => setGlow(false), 1000);
+	}
+	return glow;
+}
+
 const StatBlock: React.FC<{
 	stat: DndStat;
 	value: number;
 	modifier: number;
 	label: string;
 }> = ({ value, modifier, label, stat }) => {
-	const [glow, setGlow] = React.useState(false);
-	const [prevValue, setPrevValue] = React.useState(value);
-	if (prevValue !== value) {
-		setPrevValue(value);
-		setGlow(true);
-		setTimeout(() => setGlow(false), 1000);
-	}
+	const glowValue = useGlow(value);
+	const glowModifier = useGlow(modifier);
 	return (
 		<div
 			className="relative flex flex-col items-center justify-center py-2"
@@ -35,7 +41,7 @@ const StatBlock: React.FC<{
 				className={`
 					flex h-14 w-12 items-center justify-center rounded-md border
 					border-stone-400 text-lg transition-colors
-					${glow ? "text-blue-500" : `text-stone-600`}
+					${glowModifier ? "text-sky-500" : `text-stone-600`}
 				`}
 			>
 				{modifier && modifier >= 0 ? "+" : ""}
@@ -47,7 +53,7 @@ const StatBlock: React.FC<{
 					className={`
 						absolute bottom-0 flex h-5 w-6 items-center justify-center rounded-md
 						border border-stone-400 bg-background text-center text-sm leading-none
-						text-stone-500
+						${glowValue ? "text-sky-500" : `text-stone-500`}
 						hover:bg-stone-100
 					`}
 				>
